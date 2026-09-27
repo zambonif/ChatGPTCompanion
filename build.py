@@ -11,7 +11,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parent
 ADDON = ROOT / 'addon'
-VERSION = '0.1.2'
+VERSION = '0.1.3'
 
 
 def make_mo(messages):
@@ -76,11 +76,12 @@ def main():
         pot.append('msgid ' + json.dumps(msg,ensure_ascii=False) + '\nmsgstr ""\n')
     (ROOT / 'translations/messages.pot').write_text('\n'.join(pot), encoding='utf-8')
     for lang, values in translations.items():
-        if len(values) != len(strings):
+        if not isinstance(values, dict) or set(values) != set(strings):
             raise ValueError('Translation count mismatch: ' + lang)
         header = 'Project-Id-Version: ChatGPT Companion '+VERSION+'\nLanguage: '+lang+'\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n'
         messages = {'': header}
-        for msgid, msgstr in zip(strings, values):
+        for msgid in strings:
+            msgstr = values[msgid]
             if set(re.findall(r'\{\w+\}',msgid)) != set(re.findall(r'\{\w+\}',msgstr)):
                 raise ValueError('Translation placeholder mismatch: ' + lang)
             messages[msgid] = msgstr
@@ -100,7 +101,7 @@ def main():
         (folder/'readme.html').write_text(render_doc(source,lang),encoding='utf-8')
         (folder/'readme.txt').write_text(source,encoding='utf-8')
     dist = ROOT/'dist';dist.mkdir(exist_ok=True)
-    target = dist/('fzChatGPTCompanion-'+VERSION+'.nvda-addon')
+    target = dist/('ChatGPTCompanion-'+VERSION+'.nvda-addon')
     with zipfile.ZipFile(target,'w',zipfile.ZIP_DEFLATED) as archive:
         for f in sorted(ADDON.rglob('*')):
             if f.is_file() and '__pycache__' not in f.parts:

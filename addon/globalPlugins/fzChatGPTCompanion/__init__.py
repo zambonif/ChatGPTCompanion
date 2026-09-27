@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 """ChatGPT Companion: foreground-only accessibility monitoring; no network access."""
 import time
+from collections import OrderedDict
 import addonHandler
 import api
 import config
@@ -16,6 +17,7 @@ import textInfos
 import ui
 import wx
 from .engine import Tracker, allowed_url, parse_tokens
+from .reading import read_snapshot
 
 addonHandler.initTranslation()
 SECTION = 'fzChatGPTCompanion'
@@ -104,13 +106,17 @@ def field_tokens(fields):
             if capture is None and role in {'HEADING', 'BUTTON', 'TOGGLEBUTTON', 'EDITABLETEXT', 'STATUSBAR'}:
                 capture = {'kind': {'HEADING': 'heading', 'BUTTON': 'button', 'TOGGLEBUTTON': 'button',
                     'EDITABLETEXT': 'edit', 'STATUSBAR': 'status'}[role],
-                    'depth': len(stack), 'name': field.get('name', ''), 'text': []}
+                    'depth': len(stack), 'name': field.get('name', ''), 'text': [],
+                    'identity': str(field.get('uniqueID') or field.get('runtimeID') or '')}
             elif capture is None and role in {'PARAGRAPH', 'SECTION', 'ARTICLE', 'LISTITEM'}:
                 tokens.append(('text', '\n'))
         elif command == 'controlEnd':
             if capture is not None and capture['depth'] == len(stack):
                 content = ''.join(capture['text']).strip() or capture['name'] or ''
-                tokens.append((capture['kind'], content))
+                if capture['kind'] == 'heading':
+                    tokens.append((capture['kind'], content, capture['identity']))
+                else:
+                    tokens.append((capture['kind'], content))
                 capture = None
             if stack:
                 role = stack.pop()
@@ -151,6 +157,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.timer = None
+        self.sessions = OrderedDict()
+        self.session_key = None
         self.root = None
         self.url = None
         self.tracker = Tracker()
@@ -171,6 +179,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         if CompanionSettings in NVDASettingsDialog.categoryClasses:
             NVDASettingsDialog.categoryClasses.remove(CompanionSettings)
         self.tracker = Tracker()
+        self.sessions.clear()
         super().terminate()
 
     def _reset(self):
@@ -178,38 +187,54 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         self.url = None
         self.active = False
         self.tracker = Tracker()
+        self.session_key = None
+        self.sessions.clear()
+
+    def _select_context(self, context):
+        reader, root, url, app = context
+        # Separate different windows even if they show the same conversation URL.
+        key = (app, getattr(root, 'processID', None), getattr(root, 'windowHandle', None), url)
+        new_chat_url = (self.url and self.url.rstrip('/') in {'https://chatgpt.com', 'https://chat.openai.com'}
+                        and '/c/' in url and root == self.root)
+        if key not in self.sessions:
+            if new_chat_url and self.session_key in self.sessions:
+                self.sessions[key] = self.sessions.pop(self.session_key)
+            else:
+                self.sessions[key] = Tracker()
+        self.tracker = self.sessions[key]
+        self.sessions.move_to_end(key)
+        while len(self.sessions) > 8:
+            self.sessions.popitem(last=False)
+        self.root, self.url, self.session_key = root, url, key
+        return reader
+
+    def _snapshot(self, context):
+        reader = self._select_context(context)
+        return read_snapshot(reader, field_tokens, config.conf[SECTION]['ignoreInterface'])
+
+    def _describe(self, snapshot):
+        self.diagnostic = _('Messages: {count}. Generation control: {state}.').format(
+            count=len(snapshot.messages), state=(_('busy') if snapshot.busy is True else
+            _('idle') if snapshot.busy is False else _('not detected')))
+        if not snapshot.messages:
+            self.diagnostic = _('The latest conversation text is not available to NVDA. No older answer will be read.')
 
     def _tick(self):
         try:
             if not config.conf[SECTION]['enabled']:
-                self._reset()
+                self.active = False
                 self.diagnostic = _('Automatic reading is disabled.')
                 return
             context = document_context()
             if not context:
-                self._reset()
+                # Keep bounded per-conversation baselines while another window
+                # has focus. Announcements resume only after returning to ChatGPT.
+                self.active = False
                 self.diagnostic = _('No supported conversation detected.')
                 return
-            reader, root, url, app = context
-            # Creating a new conversation may change / to /c/<id> in the same document.
-            new_chat_url = (self.url and self.url.rstrip('/') in {'https://chatgpt.com', 'https://chat.openai.com'}
-                            and '/c/' in url)
-            if root != self.root or (url != self.url and not new_chat_url):
-                self.tracker = Tracker()
-            self.root, self.url = root, url
-            info = reader.makeTextInfo(textInfos.POSITION_ALL)
-            # Do not scan giant histories in the screen reader's UI thread.
-            if len(info.text) > 250000:
-                self.diagnostic = _('Conversation too long. Open a shorter conversation for automatic reading.')
-                self.tracker = Tracker()
-                self.active = False
-                return
-            snapshot = parse_tokens(field_tokens(info.getTextWithFields()),
-                ignore_interface=config.conf[SECTION]['ignoreInterface'])
+            snapshot = self._snapshot(context)
             self.active = True
-            self.diagnostic = _('Messages: {count}. Generation control: {state}.').format(
-                count=len(snapshot.messages), state=(_('busy') if snapshot.busy is True else
-                _('idle') if snapshot.busy is False else _('not detected')))
+            self._describe(snapshot)
             settings = config.conf[SECTION]
             events = self.tracker.update(snapshot, time.monotonic(), settings['mode'],
                 settings['settleSeconds'], settings['fallbackSeconds'])
@@ -218,8 +243,10 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
                 if announcement:
                     ui.message(announcement)
         except Exception:
-            # Deliberately never log conversation text, URLs or exception messages.
-            self._reset()
+            # Do not expose cached answers on a failed current read. Keep the
+            # comparison state to recover after transient accessibility errors.
+            self.active = False
+            self.tracker.last_answer = ''
             self.diagnostic = _('Accessible text unavailable. Try browse mode or another supported browser.')
         finally:
             if self.timer is not None:
@@ -242,26 +269,26 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
         ui.message(self.tracker.last_answer if self.active and self.tracker.last_answer else _('No answer available.'))
 
     def _tick_manual_refresh(self):
-        # Manual commands work even when automatic reading is disabled.
+        # Always read a fresh tail, even if automatic reading is disabled.
+        self.active = False
+        self.tracker.last_answer = ''
+        context = None
         try:
             context = document_context()
             if context:
-                reader, root, url, app = context
-                info = reader.makeTextInfo(textInfos.POSITION_ALL)
-                if len(info.text) <= 250000:
-                    snapshot = parse_tokens(field_tokens(info.getTextWithFields()),
-                ignore_interface=config.conf[SECTION]['ignoreInterface'])
-                    if root != self.root or url != self.url:
-                        self.tracker = Tracker()
-                    self.root, self.url = root, url
-                    answers = [m.text for m in snapshot.messages if m.role == 'assistant']
-                    self.tracker.last_answer = answers[-1] if answers else ''
-                    self.tracker.last_status = snapshot.status
-                    self.active = True
-                    return
+                snapshot = self._snapshot(context)
+                self._describe(snapshot)
+                self.tracker.last_answer = (
+                    snapshot.messages[-1].text
+                    if snapshot.messages and snapshot.messages[-1].role == 'assistant' else '')
+                self.tracker.last_status = snapshot.status
+                self.active = True
+                return
         except Exception:
-            pass
-        self._reset()
+            self.diagnostic = _('Accessible text unavailable. Try browse mode or another supported browser.')
+        self.tracker.last_answer = ''
+        if not context:
+            self.diagnostic = _('No supported conversation detected.')
 
     @script(description=_('Read the latest progress update'), gesture='kb:NVDA+control+shift+p')
     def script_progress(self, gesture):
@@ -274,4 +301,5 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
     def script_diagnostic(self, gesture):
         if globalVars.appArgs.secure:
             return
+        self._tick_manual_refresh()
         ui.message(self.diagnostic)

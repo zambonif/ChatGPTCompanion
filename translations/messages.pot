@@ -29,9 +29,6 @@ msgstr ""
 msgid "Confirm sending when reading sent messages is disabled"
 msgstr ""
 
-msgid "Conversation too long. Open a shorter conversation for automatic reading."
-msgstr ""
-
 msgid "Enable automatic reading"
 msgstr ""
 
@@ -81,6 +78,9 @@ msgid "Read the latest progress update"
 msgstr ""
 
 msgid "Report ChatGPT accessibility diagnostics"
+msgstr ""
+
+msgid "The latest conversation text is not available to NVDA. No older answer will be read."
 msgstr ""
 
 msgid "Toggle automatic ChatGPT reading"

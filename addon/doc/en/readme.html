@@ -1,41 +1,50 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ChatGPT Companion — 0.1.2</title>
+<title>ChatGPT Companion — 0.1.3</title>
 <style>body{font:1.1rem/1.6 system-ui,sans-serif;max-width:58rem;margin:2rem auto;padding:0 1rem}a{color:#0645ad}li{margin:.5rem 0}</style></head><body><main>
-<h1>ChatGPT Companion 0.1.2 — experimental release</h1>
-<p>By Fernando de Paula Zamboni. <a href="https://www.blog.fernandozamboni.com">https://www.blog.fernandozamboni.com</a></p>
-<p>Reads sent messages, answers and accessible progress updates in the active ChatGPT conversation without moving focus. Uses NVDA speech and braille. Interface and documentation are available in Brazilian Portuguese, English, Spanish, French and Italian.</p>
-<h2>Changes in version 0.1.2</h2>
-<p>Ignore interface notices and footer text is enabled by default. It removes the known trailing mistake disclaimer followed by “Latest response”, from both automatic reading and the repeat command. This is not a global text replacement: isolated sentences, quoted examples and mid-answer references remain intact. Matching is textual; if an answer literally ends with that entire block, disable the option to hear it. Other unrecognised footers may remain.</p>
-<p>An old answer is no longer requeued when a new user turn appears or when an already announced answer disappears and returns in the accessibility tree. New installations default to a 3-second silence fallback; existing settings are preserved. The user confirmed automatic reading with this fallback in Chrome and the Windows app using 0.1.1. This update still needs testing in both environments before publication.</p>
-<h2>Version 0.1.1 change</h2>
-<p>Fixed repeated sent-message announcements during page updates. Each new send is announced once; changes to the same text or temporary disappearance do not trigger another announcement. A new send with identical text is still recognised. For silent sending, disable both Read sent messages and Confirm sending. Editing an existing message without adding a new one does not trigger automatic sent-message reading.</p>
-<h2>Installation and first test<br>Open fzChatGPTCompanion-0.1.2.nvda-addon, confirm installation and restart NVDA when prompted. Declared compatibility: NVDA 2025.1 through 2026.2. Actual Windows testing is still required. The lastTestedNVDAVersion field is the compatibility target of this experimental package, not a claim of completed runtime testing.</h2>
-<p>Start with a short conversation in Chrome at <a href="https://chatgpt.com.">https://chatgpt.com.</a> Wait about two seconds, then send a simple question. Expect your message, recognised progress updates and the completed answer to be read. Existing history is not announced. Switching tabs, conversations or applications establishes a new baseline; updates received while away are not announced on return. Keep the conversation active during testing.</p>
-<p>Edge, Firefox, Brave and the ChatGPT Windows app are experimental targets. The app must expose a document with structured accessible text. Support requires validation in each environment. No ChatGPT API key or additional API payment is required.</p>
-<h2>Settings<br>Open NVDA menu, Preferences, Settings, ChatGPT Companion. Use Tab, Space and arrow keys, then OK. Save NVDA settings if saving on exit is disabled.</h2>
+<h1>ChatGPT Companion</h1>
+<p>By Fernando de Paula Zamboni. Version 0.1.3 (beta).</p>
+<p>ChatGPT Companion is an NVDA add-on for reading new messages in the existing ChatGPT website and Windows app. It can announce answers automatically, read or confirm your sent messages, and announce accessible progress updates without moving keyboard focus.</p>
+<h2>Why this add-on?</h2>
+<p>The goal is to follow a conversation without repeatedly navigating back from the message box to find the latest answer. You continue using your normal ChatGPT account and interface. There is no separate chat client, API key or additional API charge. Speech and braille use NVDA&#x27;s current configuration.</p>
+<p>Other add-ons may offer overlapping features. This project focuses on automatic announcements in the existing interface, with independent controls for sent messages, answers and progress. It is an optional accessibility aid, not a replacement for accessibility improvements in ChatGPT itself.</p>
+<h2>Install</h2>
+<p>Download ChatGPTCompanion-0.1.3.nvda-addon, open it while NVDA is running, confirm installation and restart NVDA. NVDA 2026.2 or later is required; the declared tested API version is 2026.2. Later NVDA versions may require compatibility review.</p>
+<p>Downloads: <a href="https://github.com/zambonif/ChatGPTCompanion/releases">https://github.com/zambonif/ChatGPTCompanion/releases</a></p>
+<p>Source and issue reports: <a href="https://github.com/zambonif/ChatGPTCompanion">https://github.com/zambonif/ChatGPTCompanion</a></p>
+<h2>Start using it</h2>
+<p>Open ChatGPT in Chrome or the Windows app, leave the conversation active for a moment and send a question. Reading was confirmed by the author in both environments during tests of earlier releases. Version 0.1.3 includes further fixes that still need real-world testing. Edge, Firefox and Brave are additional experimental targets.</p>
+<p>An existing conversation opens silently. The add-on monitors only the active conversation. It remembers up to eight recently visited contexts during the NVDA session. If you leave a recognised conversation and return after an answer arrives, it can announce that new answer on return; it does not speak in the background. Restarting NVDA or toggling monitoring with its shortcut clears this memory.</p>
+<h2>Settings</h2>
+<p>Open NVDA menu, Preferences, Settings, ChatGPT Companion. Existing preferences are preserved on upgrade. Save NVDA&#x27;s configuration if automatic saving is disabled.</p>
 <ul>
-<li>Enable automatic reading: turn monitoring on or off.</li>
-<li>Read sent messages: read the content after it appears in the conversation, not merely when Enter is pressed.</li>
-<li>Confirm sending: if sent-message reading is disabled, announce only “Message sent”. Disable both for silent sending.</li>
-<li>Read answers and Read progress updates: independent switches.</li>
-<li>Complete answer: default; requires a recognised send control and two seconds without text changes.</li>
-<li>New paragraphs: experimental; reads completed paragraphs during generation. Website text revisions may cause repetition. Text without paragraph breaks may wait until completion.</li>
-<li>Wait after completion: 1 to 10 seconds; default 2.</li>
-<li>Fallback after silence: 0 to 60 seconds; 0 disables it and new installations default to 3. If no generation control is recognised, a value such as 8 infers completion after silence. A pause may cause premature reading; this is not a reliable completion signal.</li>
+<li>Enable automatic reading: switch monitoring on or off.</li>
+<li>Read sent messages: read your message after it appears in the conversation.</li>
+<li>Confirm sending: say only “Message sent” when reading sent messages is disabled. Disable both options for silent sending.</li>
+<li>Read answers and Read progress updates: control these announcements independently.</li>
+<li>Ignore interface notices and footer text: enabled by default; filters recognised trailing disclaimer blocks. Disable it if a literal footer example at the end of an answer is removed.</li>
+<li>Complete answer: waits for a recognised completion control and stable text. New paragraphs is an experimental alternative for reading during generation.</li>
+<li>Wait after completion: 1–10 seconds, default 2.</li>
+<li>Fallback after silence: 0–60 seconds, default 3 for new installations. Used when no generation control is recognised. A long pause can be mistaken for completion; increase the value if reading starts too early. Set 0 to disable this fallback.</li>
 </ul>
-<h2>Commands<br>NVDA means Insert or Caps Lock, according to your configuration. Reassign commands under Preferences, Input gestures, ChatGPT Companion.</h2>
+<h2>Keyboard commands</h2>
+<p>NVDA means Insert or Caps Lock, depending on your keyboard settings. Reassign these commands in NVDA&#x27;s Input gestures dialog, under ChatGPT Companion.</p>
 <ul>
 <li>NVDA+Control+Shift+G: toggle automatic reading.</li>
-<li>NVDA+Control+Shift+R: read the latest available answer, which may still be partial. Works with automatic reading disabled.</li>
-<li>NVDA+Control+Shift+P: read the latest available progress update.</li>
-<li>NVDA+Control+Shift+D: report recognised message count and generation control status.</li>
-<li>Control: stop current speech using normal NVDA behaviour. Use the G command to prevent subsequent announcements.</li>
+<li>NVDA+Control+Shift+R: read the latest available answer. If a newer question is waiting for a response, the previous answer is not substituted. A response still being generated may be partial.</li>
+<li>NVDA+Control+Shift+P: read the latest accessible progress update.</li>
+<li>NVDA+Control+Shift+D: refresh and report diagnostics for the recent messages and generation control.</li>
+<li>Control: stop current speech using NVDA&#x27;s usual behaviour. Use the G shortcut to stop subsequent automatic announcements.</li>
 </ul>
-<h2>Limitations and troubleshooting<br>“Thinking” means only a status or summary exposed by the interface. The add-on cannot retrieve internal reasoning, hidden text or content unavailable to NVDA. It recognises author headings and controls in five languages; interface changes may require updates. Images, attachments and formulas have no special interpretation.</h2>
-<p>If diagnostics report zero messages, confirm that a message was sent and try browse mode with NVDA+Space. Try Chrome or Edge if needed. If messages are recognised but the generation control is not, use manual reading or the optional silence fallback. Conversations above 250,000 characters are skipped to limit processing; long conversations below that limit can still affect performance.</p>
-<p>Native live-region announcements from the page/NVDA may duplicate speech. Disable the add-on’s progress reading if necessary; it does not globally suppress native announcements. Report browser/app version, NVDA version, interface language and the diagnostic message; conversation content is not required. Test tab switching, installation, removal, settings persistence and all four commands before release.</p>
-<h2>Privacy, licence and distribution<br>No network, cookies, passwords, clipboard or conversation files are accessed. Accessible text is processed in memory while the conversation is active, without saving or sending its content. Secure Windows screens are excluded. NVDA stores the settings.</h2>
-<p>GNU GPL version 2 or later, without warranty; see COPYING.txt. Independent project, not affiliated with OpenAI or NV Access. The root manifest.ini is in English; translations are under locale. Before Store submission, test on Windows, verify declared compatibility and publish source code plus a direct HTTPS package download. Package structure does not guarantee Store approval.</p>
+<h2>Troubleshooting and limitations</h2>
+<p>If nothing is read, check Read answers, try the R and D commands, and check the silence fallback. The message count in diagnostics refers to the recent portion being inspected, not the whole conversation. Try browse mode with NVDA+Space if no conversation is recognised.</p>
+<p>The add-on reads accessible author headings and text. It cannot retrieve content which ChatGPT has not exposed to NVDA. If the current answer is unavailable, it reports no available answer instead of deliberately using a cached older one. Interface changes can still affect detection. It does not interpret attachments, images or formulas specially. Progress means visible, accessible status information, not internal reasoning.</p>
+<p>Version 0.1.3 reads recent turns from the document end instead of rejecting histories over 250,000 characters. Extremely large individual responses or providers without heading navigation can still be slow or incomplete. The fallback search covers up to 2,560 lines from the end.</p>
+<p>Native page announcements may duplicate speech; disabling this add-on&#x27;s progress announcements can help. Report your NVDA version, browser/app version, interface language, diagnostic output and steps to reproduce. Private conversation text is not required.</p>
+<h2>Changes in 0.1.3</h2>
+<p>Improved reading of long conversations and histories containing editable fields. The repeat command requests fresh text. Recent conversation state is retained across temporary focus changes. Documentation now separates user instructions from development and test records. The manifest homepage points to the project and its minimum NVDA version is 2026.2.</p>
+<h2>Privacy and licence</h2>
+<p>The add-on does not make network requests or access passwords, cookies or the clipboard. It temporarily holds accessible conversation text in memory, without saving or sending it. NVDA stores preferences. It is disabled on secure Windows screens.</p>
+<p>Free software under GNU GPL version 2 or later, without warranty. Independent project, not affiliated with OpenAI or NV Access. Interface and help are available in English, Brazilian Portuguese, Spanish, French and Italian.</p>
 </main></body></html>

@@ -1,5 +1,5 @@
 msgid ""
-msgstr "Project-Id-Version: ChatGPT Companion 0.1.2\nLanguage: pt_BR\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n"
+msgstr "Project-Id-Version: ChatGPT Companion 0.1.3\nLanguage: pt_BR\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n"
 
 msgid "Accessible text unavailable. Try browse mode or another supported browser."
 msgstr "Texto acessível indisponível. Experimente o modo de navegação ou outro navegador compatível."
@@ -27,9 +27,6 @@ msgstr "Resposta completa"
 
 msgid "Confirm sending when reading sent messages is disabled"
 msgstr "Confirmar o envio quando a leitura das mensagens enviadas estiver desativada"
-
-msgid "Conversation too long. Open a shorter conversation for automatic reading."
-msgstr "Conversa muito longa. Abra uma conversa mais curta para a leitura automática."
 
 msgid "Enable automatic reading"
 msgstr "Ativar leitura automática"
@@ -81,6 +78,9 @@ msgstr "Ler a última atualização de andamento"
 
 msgid "Report ChatGPT accessibility diagnostics"
 msgstr "Informar o diagnóstico de acessibilidade do ChatGPT"
+
+msgid "The latest conversation text is not available to NVDA. No older answer will be read."
+msgstr "O texto mais recente da conversa não está disponível ao NVDA. Nenhuma resposta anterior será lida."
 
 msgid "Toggle automatic ChatGPT reading"
 msgstr "Ativar ou desativar a leitura automática do ChatGPT"
