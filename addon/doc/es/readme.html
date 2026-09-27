@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChatGPT Companion — 0.1.2</title>
+<style>body{font:1.1rem/1.6 system-ui,sans-serif;max-width:58rem;margin:2rem auto;padding:0 1rem}a{color:#0645ad}li{margin:.5rem 0}</style></head><body><main>
+<h1>ChatGPT Companion 0.1.2 — versión experimental</h1>
+<p>Por Fernando de Paula Zamboni. <a href="https://www.blog.fernandozamboni.com">https://www.blog.fernandozamboni.com</a></p>
+<p>Lee mensajes enviados, respuestas y avisos de progreso accesibles en la conversación activa de ChatGPT, sin mover el foco. Utiliza la voz y el braille de NVDA. Interfaz y documentación en portugués brasileño, inglés, español, francés e italiano.</p>
+<h2>Cambios en la versión 0.1.2</h2>
+<p>Ignorar avisos y textos de la interfaz está activado por defecto. Elimina el bloque final conocido de advertencia de errores seguido de “Respuesta más reciente”, tanto en la lectura automática como en el comando de repetición. No realiza una sustitución global: conserva frases aisladas, ejemplos entre comillas y referencias dentro de la respuesta. El reconocimiento es textual; si una respuesta termina literalmente con ese bloque completo, desactiva la opción para escucharlo. Otros pies no reconocidos pueden permanecer.</p>
+<p>Una respuesta antigua ya no vuelve a la cola al aparecer un nuevo envío ni al desaparecer y reaparecer una respuesta ya anunciada en el árbol de accesibilidad. Las instalaciones nuevas usan 3 segundos de alternativa por silencio; se conservan los ajustes existentes. El usuario confirmó la lectura automática con esta alternativa en Chrome y en la aplicación Windows con 0.1.1. Esta actualización aún debe probarse en ambos entornos antes de publicarla.</p>
+<h2>Cambio en la versión 0.1.1</h2>
+<p>Corregida la repetición del mensaje enviado durante las actualizaciones de la página. Cada nuevo envío se anuncia una vez; los cambios del mismo texto o su desaparición temporal no generan otro anuncio. Un nuevo envío con texto idéntico sigue reconociéndose. Para un envío silencioso, desactiva Leer mensajes enviados y Confirmar el envío. Editar un mensaje existente sin añadir otro no provoca una nueva lectura automática del envío.</p>
+<h2>Instalación y primera prueba<br>Abre fzChatGPTCompanion-0.1.2.nvda-addon, confirma la instalación y reinicia NVDA cuando se solicite. Compatibilidad declarada: NVDA 2025.1 a 2026.2; aún necesita pruebas reales en Windows. lastTestedNVDAVersion indica el objetivo de compatibilidad de este paquete experimental, no una prueba de ejecución realizada.</h2>
+<p>Empieza con una conversación corta en Chrome, en <a href="https://chatgpt.com.">https://chatgpt.com.</a> Espera unos dos segundos y envía una pregunta sencilla. Deben leerse tu mensaje, los avisos reconocidos y la respuesta terminada. No se anuncia el historial existente. Al cambiar de pestaña, conversación o aplicación se establece una nueva referencia; no se anuncian al volver los cambios recibidos durante tu ausencia. Mantén la conversación activa durante la prueba.</p>
+<p>Edge, Firefox, Brave y la aplicación ChatGPT para Windows son objetivos experimentales. La aplicación debe exponer un documento con texto accesible estructurado. Hay que validar cada entorno. No requiere clave ni pago adicional de API de ChatGPT.</p>
+<h2>Configuración<br>Abre el menú NVDA, Preferencias, Opciones, ChatGPT Companion. Usa Tab, Espacio y las flechas, y confirma con Aceptar. Guarda la configuración de NVDA si el guardado al salir está desactivado.</h2>
+<ul>
+<li>Activar lectura automática: activa o desactiva la supervisión.</li>
+<li>Leer mensajes enviados: lee el contenido cuando aparece en la conversación, no solo al pulsar Intro.</li>
+<li>Confirmar el envío: si no se leen los mensajes enviados, anuncia únicamente “Mensaje enviado”. Desactiva ambas opciones para no anunciar el envío.</li>
+<li>Leer respuestas y Leer actualizaciones de progreso: opciones independientes.</li>
+<li>Respuesta completa: predeterminada; espera un control de envío reconocido y dos segundos sin cambios de texto.</li>
+<li>Nuevos párrafos: experimental; lee párrafos completos durante la generación. Las revisiones del sitio pueden causar repeticiones. Sin saltos de párrafo puede esperar hasta el final.</li>
+<li>Espera tras la finalización: de 1 a 10 segundos; valor predeterminado 2.</li>
+<li>Alternativa por silencio: de 0 a 60 segundos; 0 la desactiva y el valor predeterminado para nuevas instalaciones es 3. Si no se reconoce el control de generación, un valor como 8 permite deducir el final tras un silencio. Una pausa puede provocar una lectura anticipada; no garantiza la finalización.</li>
+</ul>
+<h2>Atajos<br>NVDA corresponde a Insert o Bloq Mayús según tu configuración. Puedes cambiar los atajos en Preferencias, Gestos de entrada, ChatGPT Companion.</h2>
+<ul>
+<li>NVDA+Control+Shift+G: activar o desactivar la lectura automática.</li>
+<li>NVDA+Control+Shift+R: leer la última respuesta disponible, que puede ser parcial. Funciona con la lectura automática desactivada.</li>
+<li>NVDA+Control+Shift+P: leer el último aviso de progreso disponible.</li>
+<li>NVDA+Control+Shift+D: anunciar el número de mensajes reconocidos y el estado del control de generación.</li>
+<li>Control: detener la voz actual según el comportamiento normal de NVDA. Usa el atajo G para impedir los siguientes anuncios.</li>
+</ul>
+<h2>Limitaciones y solución de problemas<br>“Pensamiento” se refiere únicamente a un aviso o resumen expuesto por la interfaz. No recupera razonamiento interno, texto oculto ni contenido que NVDA no pueda acceder. Reconoce encabezados de autor y controles en cinco idiomas; los cambios de interfaz pueden requerir actualizaciones. No interpreta especialmente imágenes, adjuntos ni fórmulas.</h2>
+<p>Si el diagnóstico indica cero mensajes, comprueba que has enviado uno y prueba el modo exploración con NVDA+Espacio. Si es necesario, prueba Chrome o Edge. Si reconoce mensajes pero no el control de generación, usa la lectura manual o la alternativa por silencio. Se omiten conversaciones de más de 250 000 caracteres para limitar el procesamiento; otras conversaciones largas también pueden afectar al rendimiento.</p>
+<p>Los anuncios de regiones dinámicas del sitio o de NVDA pueden duplicar la voz. Desactiva la lectura de progreso del complemento si hace falta. No suprime globalmente los anuncios nativos. Para informar de problemas, indica versión de navegador o aplicación, versión de NVDA, idioma de interfaz y diagnóstico; no hace falta compartir la conversación. Antes de publicar, prueba cambios de pestaña, instalación, desinstalación, guardado de opciones y los cuatro atajos.</p>
+<h2>Privacidad, licencia y distribución<br>No accede a la red, cookies, contraseñas, portapapeles ni archivos de conversaciones. Procesa el texto accesible en memoria mientras la conversación está activa, sin guardarlo ni enviarlo. No funciona en pantallas seguras de Windows. NVDA guarda las opciones.</h2>
+<p>GNU GPL versión 2 o posterior, sin garantía; consulta COPYING.txt. Proyecto independiente, sin afiliación con OpenAI ni NV Access. El manifest.ini de la raíz está en inglés; las traducciones están en locale. Antes de enviarlo a la Store, prueba Windows, verifica la compatibilidad declarada y publica el código fuente y un enlace HTTPS directo al paquete. La estructura del paquete no garantiza la aprobación.</p>
+</main></body></html>

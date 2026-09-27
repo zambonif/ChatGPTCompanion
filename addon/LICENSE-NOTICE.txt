@@ -1,0 +1,9 @@
+ChatGPT Companion
+Copyright (C) 2026 Fernando de Paula Zamboni
+SPDX-License-Identifier: GPL-2.0-or-later
+This program is free software: you can redistribute it and/or modify it under the terms
+of the GNU General Public License as published by the Free Software Foundation,
+either version 2 of the License, or (at your option) any later version.
+This program is distributed WITHOUT ANY WARRANTY; without even the implied warranty
+of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See addon/COPYING.txt.
+This is an independent project, not affiliated with OpenAI or NV Access.

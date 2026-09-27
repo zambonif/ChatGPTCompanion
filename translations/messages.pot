@@ -1,0 +1,102 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Accessible text unavailable. Try browse mode or another supported browser."
+msgstr ""
+
+msgid "Answer reading mode"
+msgstr ""
+
+msgid "Automatic reading disabled."
+msgstr ""
+
+msgid "Automatic reading enabled."
+msgstr ""
+
+msgid "Automatic reading is disabled."
+msgstr ""
+
+msgid "ChatGPT Companion"
+msgstr ""
+
+msgid "ChatGPT: {text}"
+msgstr ""
+
+msgid "Complete answer"
+msgstr ""
+
+msgid "Confirm sending when reading sent messages is disabled"
+msgstr ""
+
+msgid "Conversation too long. Open a shorter conversation for automatic reading."
+msgstr ""
+
+msgid "Enable automatic reading"
+msgstr ""
+
+msgid "Fallback after silence (seconds; 0 disables)"
+msgstr ""
+
+msgid "Ignore interface notices and footer text"
+msgstr ""
+
+msgid "Message sent."
+msgstr ""
+
+msgid "Messages: {count}. Generation control: {state}."
+msgstr ""
+
+msgid "New paragraphs (experimental)"
+msgstr ""
+
+msgid "No answer available."
+msgstr ""
+
+msgid "No progress update available."
+msgstr ""
+
+msgid "No supported conversation detected."
+msgstr ""
+
+msgid "Only the active ChatGPT conversation is monitored. The silence fallback can mistake a pause for completion."
+msgstr ""
+
+msgid "Progress: {text}"
+msgstr ""
+
+msgid "Read answers"
+msgstr ""
+
+msgid "Read progress updates"
+msgstr ""
+
+msgid "Read sent messages"
+msgstr ""
+
+msgid "Read the latest available ChatGPT answer"
+msgstr ""
+
+msgid "Read the latest progress update"
+msgstr ""
+
+msgid "Report ChatGPT accessibility diagnostics"
+msgstr ""
+
+msgid "Toggle automatic ChatGPT reading"
+msgstr ""
+
+msgid "Wait after completion (seconds)"
+msgstr ""
+
+msgid "You said: {text}"
+msgstr ""
+
+msgid "busy"
+msgstr ""
+
+msgid "idle"
+msgstr ""
+
+msgid "not detected"
+msgstr ""

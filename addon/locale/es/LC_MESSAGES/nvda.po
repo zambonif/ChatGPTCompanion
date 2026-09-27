@@ -1,0 +1,101 @@
+msgid ""
+msgstr "Project-Id-Version: ChatGPT Companion 0.1.2\nLanguage: es\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n"
+
+msgid "Accessible text unavailable. Try browse mode or another supported browser."
+msgstr "Texto accesible no disponible. Prueba el modo exploración u otro navegador compatible."
+
+msgid "Answer reading mode"
+msgstr "Modo de lectura de respuestas"
+
+msgid "Automatic reading disabled."
+msgstr "Lectura automática desactivada."
+
+msgid "Automatic reading enabled."
+msgstr "Lectura automática activada."
+
+msgid "Automatic reading is disabled."
+msgstr "La lectura automática está desactivada."
+
+msgid "ChatGPT Companion"
+msgstr "ChatGPT Companion"
+
+msgid "ChatGPT: {text}"
+msgstr "ChatGPT: {text}"
+
+msgid "Complete answer"
+msgstr "Respuesta completa"
+
+msgid "Confirm sending when reading sent messages is disabled"
+msgstr "Confirmar el envío cuando la lectura de mensajes enviados esté desactivada"
+
+msgid "Conversation too long. Open a shorter conversation for automatic reading."
+msgstr "Conversación demasiado larga. Abre una conversación más corta para la lectura automática."
+
+msgid "Enable automatic reading"
+msgstr "Activar lectura automática"
+
+msgid "Fallback after silence (seconds; 0 disables)"
+msgstr "Alternativa por silencio (segundos; 0 desactiva)"
+
+msgid "Ignore interface notices and footer text"
+msgstr "Ignorar avisos y textos de la interfaz"
+
+msgid "Message sent."
+msgstr "Mensaje enviado."
+
+msgid "Messages: {count}. Generation control: {state}."
+msgstr "Mensajes: {count}. Control de generación: {state}."
+
+msgid "New paragraphs (experimental)"
+msgstr "Nuevos párrafos (experimental)"
+
+msgid "No answer available."
+msgstr "No hay respuestas disponibles."
+
+msgid "No progress update available."
+msgstr "No hay actualizaciones de progreso disponibles."
+
+msgid "No supported conversation detected."
+msgstr "No se ha detectado ninguna conversación compatible."
+
+msgid "Only the active ChatGPT conversation is monitored. The silence fallback can mistake a pause for completion."
+msgstr "Solo se supervisa la conversación activa de ChatGPT. La alternativa por silencio puede confundir una pausa con el final de la respuesta."
+
+msgid "Progress: {text}"
+msgstr "Progreso: {text}"
+
+msgid "Read answers"
+msgstr "Leer respuestas"
+
+msgid "Read progress updates"
+msgstr "Leer actualizaciones de progreso"
+
+msgid "Read sent messages"
+msgstr "Leer mensajes enviados"
+
+msgid "Read the latest available ChatGPT answer"
+msgstr "Leer la última respuesta disponible de ChatGPT"
+
+msgid "Read the latest progress update"
+msgstr "Leer la última actualización de progreso"
+
+msgid "Report ChatGPT accessibility diagnostics"
+msgstr "Informar del diagnóstico de accesibilidad de ChatGPT"
+
+msgid "Toggle automatic ChatGPT reading"
+msgstr "Activar o desactivar la lectura automática de ChatGPT"
+
+msgid "Wait after completion (seconds)"
+msgstr "Espera tras la finalización (segundos)"
+
+msgid "You said: {text}"
+msgstr "Dijiste: {text}"
+
+msgid "busy"
+msgstr "en curso"
+
+msgid "idle"
+msgstr "inactivo"
+
+msgid "not detected"
+msgstr "no detectado"
